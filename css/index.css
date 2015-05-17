@@ -84,3 +84,38 @@ button.medium.grey[disabled="disabled"] span {
 	color: #ccc;
 }
 
+.client_form .rowright {
+	margin: 0 12px 0 460px;
+}
+
+.row-border-top {
+	border-top: 1px solid #e5e5e5;
+}
+
+.clear {
+	clear: both;
+}
+
+.client_form .rowright label {
+	width: 450px;
+	padding-right: 10px;
+}
+
+.client_form .rowright input[type=text] {
+	width: 70%;
+}
+#right .box .content .client_form .rowright input[type=text] + .icon {
+	vertical-align: middle;
+}
+
+.bold-top-border {
+	border-top: 2px solid #ccc;
+}
+
+.no-border {
+	border: none;
+}
+
+.check_question {
+	display: none;
+}

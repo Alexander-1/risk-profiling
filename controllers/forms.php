@@ -8,7 +8,8 @@ class controller_forms extends private_controller {
 		$client = new client($id);
 		$forms = $client->get_user_forms();
 
-		$this->set('questions', client_form::get_all_questions());
+		$this->set('groups', client_form::get_form_groups());
+		$this->set('areas', client_form::get_form_areas());
 		$this->set('forms', $forms);
 		$this->set('client', $client);
 		$this->set('comment', post::passed('comment') ? post::get_string('comment') : '');
@@ -22,6 +23,26 @@ class controller_forms extends private_controller {
 
 		$form = new client_form($id_form);
 		$this->set('form', $form);
+
+		$form_questions = array();
+		if ($form->getAnswers()) {
+			foreach ($form->getAnswers() as $answer) {
+				$question = new form_question($answer->getIdFormQuestion());
+				switch ($question->getType()) {
+					case 'select':
+						$form_questions[$answer->getIdFormQuestion()] = $answer->getIdFormAnswer();
+						break;
+					case 'text':
+					case 'date':
+					case 'textarea':
+						$form_questions[$answer->getIdFormQuestion()] = $answer->getText();
+						break;
+					case 'table':
+						break;
+				}
+			}
+		}
+		$this->set('form_questions', $form_questions);
 
 		$this->index();
 	}
@@ -65,12 +86,11 @@ class controller_forms extends private_controller {
 		if (post::passed_not_empty(array('question', 'id'))) {
 			if (!post::is_unsigned_integer('id')) {
 				user::init()->set_error('Incorrect data');
-			} elseif (!post::is_array_of_unsigned_integer('question')) {
-				user::init()->set_error('Incorrect data');
 			} else {
 				$id_client = post::get_unsigned_integer('id');
-				$questions = post::get_array_of_unsigned_integer('question');
+				$questions = post::get_as_is('question');
 				$comment = post::passed('comment') ? post::get_string('comment') : '';
+				$areas = post::passed_not_empty('area') ? post::get_array_of_unsigned_integer('area') : array();
 
 				$client = new client($id_client);
 
@@ -82,12 +102,8 @@ class controller_forms extends private_controller {
 					if (user::init()->get_ifa()) {
 						$form->comment = $comment;
 					}
-
-					$answers = array();
-					foreach ($questions as $id_question => $id_answer) {
-						$answers[$id_question] = $id_answer;
-					}
-					$form->answers = $answers;
+					$form->setAnswers($questions);
+					$form->setAreas($areas);
 					$form->save();
 					user::init()->add_action_log("Add client form", $client->get_id(), $form->get_id());
 
@@ -106,12 +122,11 @@ class controller_forms extends private_controller {
 				user::init()->set_error('Incorrect data');
 			} elseif (!post::is_unsigned_integer('id_form')) {
 				user::init()->set_error('Incorrect data');
-			} elseif (!post::is_array_of_unsigned_integer('question')) {
-				user::init()->set_error('Incorrect data');
 			} else {
 				$id_form = post::get_unsigned_integer('id_form');
-				$questions = post::get_array_of_unsigned_integer('question');
+				$questions = post::get_as_is('question');
 				$comment = post::passed('comment') ? post::get_string('comment') : '';
+				$areas = post::passed_not_empty('area') ? post::get_array_of_unsigned_integer('area') : array();
 
 				$form = new client_form($id_form);
 
@@ -121,7 +136,8 @@ class controller_forms extends private_controller {
 					if (user::init()->get_ifa()) {
 						$form->comment = $comment;
 					}
-					$form->answers = $questions;
+					$form->setAnswers($questions);
+					$form->setAreas($areas);
 					$form->save();
 					user::init()->add_action_log("Edit client form", $form->get_id_client(), $form->get_id());
 
@@ -292,21 +308,21 @@ class controller_forms extends private_controller {
 
 		$rowsXML = $clientXML->appendChild($xml->createElement('rows'));
 
-		if ($form->answers) {
-			foreach ($form->answers as $answer) {
-				$rowXML = $rowsXML->appendChild($xml->createElement('row'));
-
-				$questionIdXML = $rowXML->appendChild($xml->createElement('question_id'));
-				$questionIdXML->appendChild($xml->createTextNode($answer['id_question']));
-				$questionTextXML = $rowXML->appendChild($xml->createElement('question_text'));
-				$questionTextXML->appendChild($xml->createTextNode($answer['question']));
-
-				$answerIdXML = $rowXML->appendChild($xml->createElement('answer_id'));
-				$answerIdXML->appendChild($xml->createTextNode($answer['id_answer']));
-				$answerTextXML = $rowXML->appendChild($xml->createElement('answer_text'));
-				$answerTextXML->appendChild($xml->createTextNode($answer['answer']));
-			}
-		}
+//		if ($form->answers) {
+//			foreach ($form->answers as $answer) {
+//				$rowXML = $rowsXML->appendChild($xml->createElement('row'));
+//
+//				$questionIdXML = $rowXML->appendChild($xml->createElement('question_id'));
+//				$questionIdXML->appendChild($xml->createTextNode($answer['id_question']));
+//				$questionTextXML = $rowXML->appendChild($xml->createElement('question_text'));
+//				$questionTextXML->appendChild($xml->createTextNode($answer['question']));
+//
+//				$answerIdXML = $rowXML->appendChild($xml->createElement('answer_id'));
+//				$answerIdXML->appendChild($xml->createTextNode($answer['id_answer']));
+//				$answerTextXML = $rowXML->appendChild($xml->createElement('answer_text'));
+//				$answerTextXML->appendChild($xml->createTextNode($answer['answer']));
+//			}
+//		}
 
 		$xml->save($this->get_xml_file_path($form));
 	}

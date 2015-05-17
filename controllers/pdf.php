@@ -68,7 +68,7 @@ class controller_pdf extends public_controller {
 		$css_files = $this->template->get_css_files();
 		$script_files = $this->template->get_script_files();
 
-		$questions = client_form::get_all_questions();
+//		$questions = client_form::get_all_questions();
 
 		include (registry::get('templates_directory') . DIRSEP . 'forms' . DIRSEP . $template . '.php');
 	}

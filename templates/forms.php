@@ -17,29 +17,11 @@ $current_form_id = isset($form) ? $form->id : 0;
 
 ?>
 <script>
-function setQuestion(el) {
-	if ( el.val() != '0' && $.trim(el.val()) != '') {
-		$('#img' + el.attr('data-id')).show();
-	} else {
-		$('#img' + el.attr('data-id')).hide();
-	}
-}
-
-function resetForm() {
-	$('select[name^="question"]').each(function(){
-		$(this).children('option').removeAttr('selected');
-		$(this).children('option:first-child').attr('selected', 'selected');
-		setQuestion($(this))
-	});
-	$('.dataTables_length input, select').not("select.multiple").selectmenu("destroy").selectmenu({
-		style: 'dropdown',
-		transferClasses: true,
-		width: null
-	});
-}
 
 $(document).ready(function(){
-	$('select[name^="question"]').each(function(){setQuestion($(this), $(this).attr('data-id'))});
+	$('select[name^="question"], input[name^="question"]').each(function(){
+		setQuestion($(this))
+	});
 })
 
 </script>
@@ -61,7 +43,7 @@ $(document).ready(function(){
 
 <? if ($forms): ?>
 
-	<div class="withpadding">
+	<div class="withpadding client_forms">
 		<table cellspacing="0" cellpadding="0" border="0">
 			<thead>
 				<tr>
@@ -87,6 +69,6 @@ $(document).ready(function(){
 	</div>
 
 <? else: ?>
-	<div class="row">This client has no forms</div>
+	<div class="row client_forms">This client has no forms</div>
 <? endif; ?>
 

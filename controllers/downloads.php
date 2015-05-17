@@ -248,7 +248,7 @@ class controller_downloads extends private_controller {
 							foreach ($form_arr['answers'] as $answer) {
 								$answers[$answer['id_question']] = $answer['id_answer'];
 							}
-							$form->answers = $answers;
+//							$form->answers = $answers;
 							$form->save();
 
 							$this->redirect('downloads?success&upload&id=' . $client->get_id());

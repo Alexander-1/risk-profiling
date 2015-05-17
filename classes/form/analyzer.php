@@ -7,18 +7,18 @@ class analyzer {
 		$parameters = array();
 		$parameters['Answers'] = array();
 
-		$questions = client_form::get_all_questions();
-
-		foreach ($questions as $question) {
-                        $letter = "";
-			foreach ($question['answers'] as $key => $answer) {
-				if ($answer['id'] == $form->answers[$question['id']]['id_answer']) {
-					$letter = $letters[$key];
-					break;
-				}
-			}
-			$parameters['Answers'][] = $letter;
-		}
+//		$questions = client_form::get_all_questions();
+//
+//		foreach ($questions as $question) {
+//			$letter = "";
+//			foreach ($question['answers'] as $key => $answer) {
+//				if ($answer['id'] == $form->answers[$question['id']]['id_answer']) {
+//					$letter = $letters[$key];
+//					break;
+//				}
+//			}
+//			$parameters['Answers'][] = $letter;
+//		}
 
 
 		for ($i = 0; $i < 5; $i++) {

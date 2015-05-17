@@ -108,15 +108,57 @@ CREATE TABLE `tsn_client_form_answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_client_form` int(11) NOT NULL,
   `id_form_question` int(11) NOT NULL,
-  `id_form_answer` int(11) NOT NULL,
-  `answer` text NOT NULL,
+  `id_form_answer` int(11) DEFAULT NULL,
+  `text` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_client_form` (`id_client_form`),
   KEY `id_form_question` (`id_form_question`),
   KEY `id_form_answer` (`id_form_answer`),
+  CONSTRAINT `tsn_client_form_answer_ibfk_3` FOREIGN KEY (`id_form_answer`) REFERENCES `tsn_form_answer` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tsn_client_form_answer_ibfk_1` FOREIGN KEY (`id_client_form`) REFERENCES `tsn_client_form` (`id`),
-  CONSTRAINT `tsn_client_form_answer_ibfk_2` FOREIGN KEY (`id_form_question`) REFERENCES `tsn_form_question` (`id`),
-  CONSTRAINT `tsn_client_form_answer_ibfk_3` FOREIGN KEY (`id_form_answer`) REFERENCES `tsn_form_answer` (`id`)
+  CONSTRAINT `tsn_client_form_answer_ibfk_2` FOREIGN KEY (`id_form_question`) REFERENCES `tsn_form_question` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_client_form_area`
+--
+
+DROP TABLE IF EXISTS `tsn_client_form_area`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_client_form_area` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_client_form` int(11) NOT NULL,
+  `id_form_area` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_client_form` (`id_client_form`),
+  KEY `id_form_area` (`id_form_area`),
+  CONSTRAINT `tsn_client_form_area_ibfk_2` FOREIGN KEY (`id_form_area`) REFERENCES `tsn_form_area` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tsn_client_form_area_ibfk_1` FOREIGN KEY (`id_client_form`) REFERENCES `tsn_client_form` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_client_form_table_column`
+--
+
+DROP TABLE IF EXISTS `tsn_client_form_table_column`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_client_form_table_column` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_client_form` int(11) NOT NULL,
+  `id_form_question` int(11) NOT NULL,
+  `id_form_table_column` int(11) NOT NULL,
+  `text` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_client_form` (`id_client_form`),
+  KEY `id_form_question` (`id_form_question`),
+  KEY `id_form_table_column` (`id_form_table_column`),
+  CONSTRAINT `tsn_client_form_table_column_ibfk_3` FOREIGN KEY (`id_form_table_column`) REFERENCES `tsn_form_table_column` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tsn_client_form_table_column_ibfk_1` FOREIGN KEY (`id_client_form`) REFERENCES `tsn_client_form` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tsn_client_form_table_column_ibfk_2` FOREIGN KEY (`id_form_question`) REFERENCES `tsn_form_question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,6 +245,77 @@ CREATE TABLE `tsn_form_answer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `tsn_form_area`
+--
+
+DROP TABLE IF EXISTS `tsn_form_area`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_form_area` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_form_area_group`
+--
+
+DROP TABLE IF EXISTS `tsn_form_area_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_form_area_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_form_area` int(11) NOT NULL,
+  `id_form_group` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_form_area` (`id_form_area`),
+  KEY `id_form_group` (`id_form_group`),
+  CONSTRAINT `tsn_form_area_group_ibfk_2` FOREIGN KEY (`id_form_group`) REFERENCES `tsn_form_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tsn_form_area_group_ibfk_1` FOREIGN KEY (`id_form_area`) REFERENCES `tsn_form_area` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_form_group`
+--
+
+DROP TABLE IF EXISTS `tsn_form_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_form_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(255) NOT NULL,
+  `order` int(3) NOT NULL,
+  `id_form_group` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_form_group` (`id_form_group`),
+  CONSTRAINT `tsn_form_group_ibfk_1` FOREIGN KEY (`id_form_group`) REFERENCES `tsn_form_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_form_group_question`
+--
+
+DROP TABLE IF EXISTS `tsn_form_group_question`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_form_group_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_form_group` int(11) NOT NULL,
+  `id_form_question` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_form_group_2` (`id_form_group`,`id_form_question`),
+  KEY `id_form_group` (`id_form_group`),
+  KEY `id_form_question` (`id_form_question`),
+  CONSTRAINT `tsn_form_group_question_ibfk_2` FOREIGN KEY (`id_form_question`) REFERENCES `tsn_form_question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tsn_form_group_question_ibfk_1` FOREIGN KEY (`id_form_group`) REFERENCES `tsn_form_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `tsn_form_question`
 --
 
@@ -212,7 +325,26 @@ DROP TABLE IF EXISTS `tsn_form_question`;
 CREATE TABLE `tsn_form_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` text NOT NULL,
+  `type` enum('select','text','date','textarea','table') NOT NULL DEFAULT 'select',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tsn_form_table_column`
+--
+
+DROP TABLE IF EXISTS `tsn_form_table_column`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tsn_form_table_column` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_form_question` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL DEFAULT 'text',
+  PRIMARY KEY (`id`),
+  KEY `id_form_question` (`id_form_question`),
+  CONSTRAINT `tsn_form_table_column_ibfk_1` FOREIGN KEY (`id_form_question`) REFERENCES `tsn_form_question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
