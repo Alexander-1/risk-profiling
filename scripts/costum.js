@@ -7,12 +7,12 @@ $(document).ready(function(){
 
 	// SELECTBOXES
 	$(function() {
-        $('.dataTables_length input, select').not("select.multiple").selectmenu({
-            style: 'dropdown',
-            transferClasses: true,
-            width: null
-        });
-    });
+		$('.dataTables_length input, select').not("select.multiple").selectmenu({
+			style: 'dropdown',
+			transferClasses: true,
+			width: null
+		});
+	});
 
 	// FORM VALIDATION
 //	$("form.valid").validate({
@@ -26,24 +26,24 @@ $(document).ready(function(){
 	// INPUTFIELD - DISPLAY INLINE TEXT
 	$('[placeholder]').focus(function() {
 		var input = $(this);
-			if (input.val() == input.attr('placeholder')) {
-				input.val('');
-				input.removeClass('placeholder');
-			}
-		}).blur(function() {
-			var input = $(this);
-			if (input.val() == '' || input.val() == input.attr('placeholder')) {
+		if (input.val() == input.attr('placeholder')) {
+			input.val('');
+			input.removeClass('placeholder');
+		}
+	}).blur(function() {
+		var input = $(this);
+		if (input.val() == '' || input.val() == input.attr('placeholder')) {
 			input.addClass('placeholder');
 			input.val(input.attr('placeholder'));
 		}
 	}).blur();
 
 	// FILE INPUT STYLE
-    $("input[type=file]").filestyle({
-        imageheight: 31,
-        imagewidth: 76,
-        width: 150
-    });
+	$("input[type=file]").filestyle({
+		imageheight: 31,
+		imagewidth: 76,
+		width: 150
+	});
 
 	// TOOLTIPS
 	$(".tip-n").tipsy({gravity: 'n'});
@@ -55,12 +55,12 @@ $(document).ready(function(){
 	$('.filebrowser').elfinder({
 		url : 'connector.php',
 		toolbar : [
-					['back', 'reload'],
-					['select', 'open'],
-					['quicklook', 'info', 'rename'],
+			['back', 'reload'],
+			['select', 'open'],
+			['quicklook', 'info', 'rename'],
 
-					['resize', 'icons', 'list', 'help']
-				],
+			['resize', 'icons', 'list', 'help']
+		],
 		docked : false
 	});
 
@@ -82,10 +82,10 @@ $(document).ready(function(){
 
 	// RADIOBUTTONS & CHECKBOXES
 	$("input[type=radio], input[type=checkbox]").each(function() {
-        if ($(this).parents("table").length === 0) {
-            $(this).customInput();
-        }
-    });
+		if ($(this).parents("table").length === 0) {
+			$(this).customInput();
+		}
+	});
 
 	// TABS
 	$(".tabs").tabs({});
@@ -93,16 +93,16 @@ $(document).ready(function(){
 	// MODAL WINDOW
 	$('.modalopen').each(function() {
 		$.data(this, 'dialog',
-		  $(this).next('.modal').dialog({
-            autoOpen: false,
-            closeText: '',
-            resizable: false,
-			modal: true,
-			show: "fade",
-			hide: "fade",
-            width: 700,
-			height: 410
-		  })
+			$(this).next('.modal').dialog({
+				autoOpen: false,
+				closeText: '',
+				resizable: false,
+				modal: true,
+				show: "fade",
+				hide: "fade",
+				width: 700,
+				height: 410
+			})
 		);
 	}).click(function() {
 		$.data(this, 'dialog').dialog('open');
@@ -115,14 +115,14 @@ $(document).ready(function(){
 
 	// ACCORDION
 	$(".accordion").accordion({
-        autoHeight: false,
-        navigation: true
-    });
+		autoHeight: false,
+		navigation: true
+	});
 
 	// WIZARD
-    $('.wizard').smartWizard({
-        transitionEffect: 'fade'
-    });
+	$('.wizard').smartWizard({
+		transitionEffect: 'fade'
+	});
 
 	// DATEPICKER
 	$(".datepicker").datepicker({
@@ -166,7 +166,7 @@ $(document).ready(function(){
 			duration: duration,
 			step: function(index) {
 				callback(
-				index, stepIndex++, estimatedSteps, start, end);
+					index, stepIndex++, estimatedSteps, start, end);
 			}
 		});
 	};
@@ -267,145 +267,145 @@ $(document).ready(function(){
 
 	// SLIDERS
 	$(".single-slide div.slide").each(function() {
-        value = $(this).attr('value').split(',');
-        firstVal = value;
+		value = $(this).attr('value').split(',');
+		firstVal = value;
 
-        rangeSpan = $(this).siblings('input.amount');
+		rangeSpan = $(this).siblings('input.amount');
 
-        $(this).slider({
-            value: [firstVal],
-            min: parseInt($(this).attr('min'), 0),
-            max: parseInt($(this).attr('max'), 0),
-            slide: function(event, ui) {
-                $(this).siblings('input.amount').val("" + ui.value);
-            }
-        });
-        rangeSpan.val("" + $(this).slider("value"));
-    });
+		$(this).slider({
+			value: [firstVal],
+			min: parseInt($(this).attr('min'), 0),
+			max: parseInt($(this).attr('max'), 0),
+			slide: function(event, ui) {
+				$(this).siblings('input.amount').val("" + ui.value);
+			}
+		});
+		rangeSpan.val("" + $(this).slider("value"));
+	});
 
-    $(".range-slide div.slide").each(function() {
-        values = $(this).attr('value').split(',');
-        firstVal = values[0];
-        secondVal = values[1];
+	$(".range-slide div.slide").each(function() {
+		values = $(this).attr('value').split(',');
+		firstVal = values[0];
+		secondVal = values[1];
 
-        rangeInputfirst = $(this).siblings('input.amount-first');
-        rangeInputsecond = $(this).siblings('input.amount-second');
+		rangeInputfirst = $(this).siblings('input.amount-first');
+		rangeInputsecond = $(this).siblings('input.amount-second');
 
-        $(this).slider({
-            values: [firstVal, secondVal],
-            min: parseInt($(this).attr('min'), 0),
-            max: parseInt($(this).attr('max'), 0),
-            range: true,
-            slide: function(event, ui) {
-                $(this).siblings('input.amount-first').val("" + ui.values[0]);
-                $(this).siblings('input.amount-second').val("" + ui.values[1]);
-            }
-        });
-        rangeInputfirst.val("" + $(this).slider("values", 0));
-        rangeInputsecond.val("" + $(this).slider("values", 1));
-    });
+		$(this).slider({
+			values: [firstVal, secondVal],
+			min: parseInt($(this).attr('min'), 0),
+			max: parseInt($(this).attr('max'), 0),
+			range: true,
+			slide: function(event, ui) {
+				$(this).siblings('input.amount-first').val("" + ui.values[0]);
+				$(this).siblings('input.amount-second').val("" + ui.values[1]);
+			}
+		});
+		rangeInputfirst.val("" + $(this).slider("values", 0));
+		rangeInputsecond.val("" + $(this).slider("values", 1));
+	});
 
-    $(".snap-slide div.slide").each(function() {
-        value = $(this).attr('value').split(',');
-        firstVal = value;
+	$(".snap-slide div.slide").each(function() {
+		value = $(this).attr('value').split(',');
+		firstVal = value;
 
-        rangeSpan = $(this).siblings('input.amount');
+		rangeSpan = $(this).siblings('input.amount');
 
-        $(this).slider({
-            value: [firstVal],
-            min: parseInt($(this).attr('min'), 0),
-            max: parseInt($(this).attr('max'), 0),
+		$(this).slider({
+			value: [firstVal],
+			min: parseInt($(this).attr('min'), 0),
+			max: parseInt($(this).attr('max'), 0),
 			step: parseInt($(this).attr('step'), 0),
-            slide: function(event, ui) {
-                $(this).siblings('input.amount').val("" + ui.value);
-            }
-        });
-        rangeSpan.val("" + $(this).slider("value"));
-    });
+			slide: function(event, ui) {
+				$(this).siblings('input.amount').val("" + ui.value);
+			}
+		});
+		rangeSpan.val("" + $(this).slider("value"));
+	});
 
 	$(".single-vert-slide div.slide").each(function() {
-        value = $(this).attr('value').split(',');
-        firstVal = value;
+		value = $(this).attr('value').split(',');
+		firstVal = value;
 
-        rangeSpan = $(this).siblings('input.amount');
+		rangeSpan = $(this).siblings('input.amount');
 
-        $(this).slider({
+		$(this).slider({
 			orientation: "vertical",
-            value: [firstVal],
-            min: parseInt($(this).attr('min'), 0),
-            max: parseInt($(this).attr('max'), 0),
-            slide: function(event, ui) {
-                $(this).siblings('input.amount').val("" + ui.value);
-            }
-        });
-        rangeSpan.val("" + $(this).slider("value"));
-    });
+			value: [firstVal],
+			min: parseInt($(this).attr('min'), 0),
+			max: parseInt($(this).attr('max'), 0),
+			slide: function(event, ui) {
+				$(this).siblings('input.amount').val("" + ui.value);
+			}
+		});
+		rangeSpan.val("" + $(this).slider("value"));
+	});
 
 	// DATATABLE
-    $('table.all').dataTable({
-        "bInfo": false,
-        "iDisplayLength": 5,
-        "aLengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        "sPaginationType": "full_numbers",
-        "bPaginate": true,
-        "aoColumnDefs": [{
-            bSortable: false,
-            aTargets: [0, -1]}],
-        "sDom": '<f>t<pl>'
-    });
+	$('table.all').dataTable({
+		"bInfo": false,
+		"iDisplayLength": 5,
+		"aLengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+		"sPaginationType": "full_numbers",
+		"bPaginate": true,
+		"aoColumnDefs": [{
+			bSortable: false,
+			aTargets: [0, -1]}],
+		"sDom": '<f>t<pl>'
+	});
 
 	$('table.pagesort').dataTable({
-        "bInfo": false,
-        "iDisplayLength": 5,
-        "aLengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        "sPaginationType": "full_numbers",
-        "bPaginate": true,
+		"bInfo": false,
+		"iDisplayLength": 5,
+		"aLengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+		"sPaginationType": "full_numbers",
+		"bPaginate": true,
 		"bFilter": false,
-        "aoColumnDefs": [{
-            bSortable: false,
-            aTargets: [0, -1]}],
-        "sDom": 't<pl>'
-    });
+		"aoColumnDefs": [{
+			bSortable: false,
+			aTargets: [0, -1]}],
+		"sDom": 't<pl>'
+	});
 
-    $('table.sortsearch').dataTable({
-        "bInfo": false,
-        "bPaginate": false,
-        "aoColumnDefs": [{
-            bSortable: false,
-            aTargets: [0, -1]}],
-        "sDom": 't<plf>'
-    });
+	$('table.sortsearch').dataTable({
+		"bInfo": false,
+		"bPaginate": false,
+		"aoColumnDefs": [{
+			bSortable: false,
+			aTargets: [0, -1]}],
+		"sDom": 't<plf>'
+	});
 
-    $('table.sorting').dataTable({
-        "bInfo": false,
-        "bPaginate": false,
-        "bFilter": false,
-        "aoColumnDefs": [{
-            bSortable: false,
-            aTargets: [0, -1]}],
-        "sDom": 't<plf>'
-    });
+	$('table.sorting').dataTable({
+		"bInfo": false,
+		"bPaginate": false,
+		"bFilter": false,
+		"aoColumnDefs": [{
+			bSortable: false,
+			aTargets: [0, -1]}],
+		"sDom": 't<plf>'
+	});
 
-    $(".dataTables_wrapper .dataTables_length select").addClass("entries");
+	$(".dataTables_wrapper .dataTables_length select").addClass("entries");
 
 	// CHECK ALL PAGES
-    $('.checkall').click(function() {
-        $(this).parents('table').find(':checkbox').attr('checked', this.checked);
-    });
+	$('.checkall').click(function() {
+		$(this).parents('table').find(':checkbox').attr('checked', this.checked);
+	});
 
 	// BUTTON HOVERS / TABLE ICON
-    $("a.button, button, .pager, .dataTables_paginate span.paginate_button, table tbody td img, .btn-upload, .title .hide").hover(function() {
-        $(this).stop().fadeTo(200, 0.75);
-    }, function() {
-        $(this).stop().fadeTo(200, 1.0);
-    });
+	$("a.button, button, .pager, .dataTables_paginate span.paginate_button, table tbody td img, .btn-upload, .title .hide").hover(function() {
+		$(this).stop().fadeTo(200, 0.75);
+	}, function() {
+		$(this).stop().fadeTo(200, 1.0);
+	});
 
 	// PIROBOX
 	$(".gallery .hover .pirobox").piroBox_ext({
-        piro_speed : 700,
-        bg_alpha : 0.5,
-        piro_scroll : true
-    });
+		piro_speed : 700,
+		bg_alpha : 0.5,
+		piro_scroll : true
+	});
 
 	// WYSIWYG EDITOR
 	//$('.wysiwyg').wysiwyg({
@@ -418,66 +418,66 @@ $(document).ready(function(){
 	//});
 
 	// TABEL CHART
-    $("table.chart").each(function() {
-        var colors = [];
-        $("table.chart thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
+	$("table.chart").each(function() {
+		var colors = [];
+		$("table.chart thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
 			width: '100%',
-            height: '250px',
-            colors: colors
-        }, {
-            xaxis: {
-                tickSize: 1
-            }
-        });
-    });
+			height: '250px',
+			colors: colors
+		}, {
+			xaxis: {
+				tickSize: 1
+			}
+		});
+	});
 
-    $("table.chart-date").each(function() {
-        var colors = [];
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	$("table.chart-date").each(function() {
+		var colors = [];
+		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        $("table.chart-date thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
-            width: '100%',
-            height: '250px',
-            colors: colors,
-            xaxisTransform: function(month) {
-                var i = 0;
-                while ((i < 12) && (month != months[i])) {
-                    i++;
-                }
-                return i;
-            }
-        }, {
-            xaxis: {
-                tickSize: 1,
-                tickFormatter: function(v, a) {
-                    return months[v];
-                }
-            }
-        });
-    });
+		$("table.chart-date thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
+			width: '100%',
+			height: '250px',
+			colors: colors,
+			xaxisTransform: function(month) {
+				var i = 0;
+				while ((i < 12) && (month != months[i])) {
+					i++;
+				}
+				return i;
+			}
+		}, {
+			xaxis: {
+				tickSize: 1,
+				tickFormatter: function(v, a) {
+					return months[v];
+				}
+			}
+		});
+	});
 
 	$("table.chart-pie").each(function() {
-        var colors = [];
-        $("table.chart-pie thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
+		var colors = [];
+		$("table.chart-pie thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
 			width : '100%',
-            height: '250px',
-            colors: colors
-        }, {
+			height: '250px',
+			colors: colors
+		}, {
 			series: {
 				pie: {
 					show: true,
@@ -504,21 +504,21 @@ $(document).ready(function(){
 				hoverable: false,
 				autoHighlight: false
 			}
-        });
-    });
+		});
+	});
 
 	$("table.chart-square").each(function() {
-        var colors = [];
-        $("table.chart-square thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
+		var colors = [];
+		$("table.chart-square thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
 			width : '100%',
-            height: '250px',
-            colors: colors
-        }, {
+			height: '250px',
+			colors: colors
+		}, {
 			series: {
 				pie: {
 					show: true,
@@ -545,24 +545,24 @@ $(document).ready(function(){
 				hoverable: false,
 				autoHighlight: false
 			}
-        });
-    });
+		});
+	});
 
 	$("table.chart-bars").each(function() {
-        var colors = [];
-        $("table.chart-bars thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
+		var colors = [];
+		$("table.chart-bars thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
 			width : '100%',
-            height: '250px',
-            colors: colors
-        }, {
+			height: '250px',
+			colors: colors
+		}, {
 			xaxis: {
-                tickSize: 1,
-            },
+				tickSize: 1,
+			},
 			series: {
 				bars: {
 					show: true,
@@ -580,24 +580,24 @@ $(document).ready(function(){
 					show: false
 				},
 			}
-        });
-    });
+		});
+	});
 
 	$("table.chart-barsmulti").each(function() {
-        var colors = [];
-        $("table.chart-barsmulti thead th:not(:first)").each(function() {
-            colors.push($(this).css("color"));
-        });
-        $(this).graphTable({
-            series: 'columns',
-            position: 'replace',
+		var colors = [];
+		$("table.chart-barsmulti thead th:not(:first)").each(function() {
+			colors.push($(this).css("color"));
+		});
+		$(this).graphTable({
+			series: 'columns',
+			position: 'replace',
 			width : '100%',
-            height: '250px',
-            colors: colors
-        }, {
+			height: '250px',
+			colors: colors
+		}, {
 			xaxis: {
-                tickSize: 1,
-            },
+				tickSize: 1,
+			},
 			series: {
 				bars: {
 					show: true,
@@ -616,40 +616,40 @@ $(document).ready(function(){
 					show: false
 				},
 			}
-        });
-    });
+		});
+	});
 
-    $('.flot-graph').before('<div class="space"></div>');
+	$('.flot-graph').before('<div class="space"></div>');
 
-    function showTooltip(x, y, contents) {
-        $('<div id="tooltip">' + contents + '</div>').css({
-            position: 'absolute',
-            display: 'none',
-            top: y + 5,
-            left: x + 5
-        }).appendTo("body").fadeIn("fast");
-    }
+	function showTooltip(x, y, contents) {
+		$('<div id="tooltip">' + contents + '</div>').css({
+			position: 'absolute',
+			display: 'none',
+			top: y + 5,
+			left: x + 5
+		}).appendTo("body").fadeIn("fast");
+	}
 
-    var previousPoint = null;
-    $(".flot-graph").bind("plothover", function(event, pos, item) {
-        $("#x").text(pos.x);
-        $("#y").text(pos.y);
+	var previousPoint = null;
+	$(".flot-graph").bind("plothover", function(event, pos, item) {
+		$("#x").text(pos.x);
+		$("#y").text(pos.y);
 
-        if (item) {
-            if (previousPoint != item.dataIndex) {
-                previousPoint = item.dataIndex;
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+				previousPoint = item.dataIndex;
 
-                $("#tooltip").remove();
-                var x = item.datapoint[0],
-                    y = item.datapoint[1];
+				$("#tooltip").remove();
+				var x = item.datapoint[0],
+					y = item.datapoint[1];
 
-                showTooltip(item.pageX, item.pageY, "<b>" + item.series.label + "</b>: " + y);
-            }
-        }
-        else {
-            $("#tooltip").remove();
-            previousPoint = null;
-        }
-    });
+				showTooltip(item.pageX, item.pageY, "<b>" + item.series.label + "</b>: " + y);
+			}
+		}
+		else {
+			$("#tooltip").remove();
+			previousPoint = null;
+		}
+	});
 
 });

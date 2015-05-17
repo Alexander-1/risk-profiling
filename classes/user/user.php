@@ -7,16 +7,16 @@ class user {
 	private $error;
 	private $last_login, $last_ip;
 	private $id, $login, $show_count, $name, $email, $phone, $ifa, $admin;
-        private $documents_access;
-        private $documents_tab_index;
+	private $documents_access;
+	private $documents_tab_index;
 
-        private function __construct() {
+	private function __construct() {
 		$this->session = new session();
 		$this->session->start();
 		$this->show_count = settings::init()->get('show_count');
 		$this->is_authorized();
 		$this->fix_logs();
-                $this->documents_tab = 0;
+		$this->documents_tab = 0;
 	}
 
 	public static function init() {
@@ -52,8 +52,8 @@ class user {
 
 	public function check_password($password) {
 		$row = db::init()->query(array('password', 'salt'))->from('user')
-				->where(array('id', '=', $this->id))
-				->get_row();
+			->where(array('id', '=', $this->id))
+			->get_row();
 		if ($row) {
 			if (strnatcmp($this->encrypt($password, $row['salt']), $row['password']) == 0) {
 				return true;
@@ -64,12 +64,12 @@ class user {
 
 	public function authorize($login, $password) {
 		if ($login != '') {
-			$login = control::get_string($login); 
+			$login = control::get_string($login);
 			$row = db::init()->query(array('password', 'salt', 'id', 'login', 'show_count', 'name', 'email', 'phone', 'ifa', 'admin', 'documents_access'))->from('user')
-					->where(array('login', '=', $login))
-					->where(array('deleted', '=', '0'))
-					->where(array('active', '=', '1'))
-					->get_row();
+				->where(array('login', '=', $login))
+				->where(array('deleted', '=', '0'))
+				->where(array('active', '=', '1'))
+				->get_row();
 			if ($row && strnatcmp($row['password'], $this->encrypt($password, $row['salt'])) == 0) {
 				$this->set_session_param('is_authorized', 1);
 				$this->set_session_param('id_user', $row['id']);
@@ -81,7 +81,7 @@ class user {
 				$this->phone = $row['phone'];
 				$this->ifa = $row['ifa'];
 				$this->admin = $row['admin'];
-                                $this->documents_access = $row['documents_access'];
+				$this->documents_access = $row['documents_access'];
 				$this->create_logs();
 			} else {
 				$this->set_error('Incorrect username or password');
@@ -95,8 +95,8 @@ class user {
 		if ($this->session->get('is_authorized') !== false && $this->session->get('id_user') !== false) {
 			if (is_null($this->id)) {
 				$row = db::init()->query(array('id', 'login', 'show_count', 'name', 'email', 'phone', 'ifa', 'admin', 'documents_access'))->from('user')
-						->where(array('id', '=', $this->session->get('id_user')))
-						->get_row();
+					->where(array('id', '=', $this->session->get('id_user')))
+					->get_row();
 				if (!$row) {
 					return false;
 				}
@@ -108,7 +108,7 @@ class user {
 				$this->phone = $row['phone'];
 				$this->ifa= $row['ifa'];
 				$this->admin = $row['admin'];
-                                $this->documents_access = $row['documents_access'];
+				$this->documents_access = $row['documents_access'];
 			}
 			return true;
 		}
@@ -168,27 +168,27 @@ class user {
 	public function get_admin() {
 		return (boolean)$this->admin;
 	}
-        
-        public function get_documents_access() {
-		return (boolean)$this->documents_access;
-        }
 
-        public function get_documents_tab()
-        {
-            return $this->documents_tab_index;
-        }
-        
-        public function set_documents_tab($tab_index)
-        {
-            $this->documents_tab_index = $tab_index;
-        }
-        
-        private function init_last_login() {
+	public function get_documents_access() {
+		return (boolean)$this->documents_access;
+	}
+
+	public function get_documents_tab()
+	{
+		return $this->documents_tab_index;
+	}
+
+	public function set_documents_tab($tab_index)
+	{
+		$this->documents_tab_index = $tab_index;
+	}
+
+	private function init_last_login() {
 		if (is_null($this->last_login)) {
 			$row = db::init()->query(array('start_ts', 'ip'))->from('logs')
-					->where(array('id_user','=',$this->id))
+				->where(array('id_user','=',$this->id))
 //					->where(array('id_session','!=',$this->session->get_id()))
-					->order('start_ts','desc')->get_row();
+				->order('start_ts','desc')->get_row();
 			if ($row) {
 				$this->last_login = $row['start_ts'];
 				$this->last_ip = $row['ip'];
@@ -224,18 +224,18 @@ class user {
 	private function create_logs() {
 		db::init()->exec('logs')->values(array(
 			'id_user' => $this->id
-			, 'start_ts' => time()
-			, 'end_ts' => time()
-			, 'ip' => $_SERVER['REMOTE_ADDR']
-			, 'id_session' => $this->session->get_id()
+		, 'start_ts' => time()
+		, 'end_ts' => time()
+		, 'ip' => $_SERVER['REMOTE_ADDR']
+		, 'id_session' => $this->session->get_id()
 		))->insert();
 	}
 
 	public function check_login($login) {
 		$row = db::init()->query()->from('user')
-				->where(array('id','!=', user::init()->get_id()))
-				->where(array('login','=', $login))
-				->get_row();
+			->where(array('id','!=', user::init()->get_id()))
+			->where(array('login','=', $login))
+			->get_row();
 		return $row ? false : true;
 	}
 
