@@ -1,0 +1,21 @@
+# conf
+/config.php
+
+# IDE
+.buildpath
+.project
+.settings/
+/nbproject
+*.sublime-project
+*.sublime-workspace
+.idea
+
+#other
+.DS_Store
+
+etc/
+
+files/pdf/*
+files/xml/*
+
+images/uploads/*
