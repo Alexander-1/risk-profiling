@@ -6,7 +6,7 @@ define('DB_USERNAME', 'sinuser');
 define('DB_PASSWORD', 'sdDf89nm');
 define('DB_NAME', 'mydomains_1');
 define('ENCODING', 'UTF8');
-define('DB_PREFIX', 'tsn_');
+define('DB_PREFIX', 'tsn_'); // if you change this value don't forget to change it in sql/dump.sql file
 
 // --- SITE ADDRESS ---
 define('WWW', '');
