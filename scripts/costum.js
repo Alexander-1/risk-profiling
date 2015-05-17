@@ -408,14 +408,14 @@ $(document).ready(function(){
     });
 
 	// WYSIWYG EDITOR
-	$('.wysiwyg').wysiwyg({
-        css: "css/wysiwyg-editor.css",
-        plugins: {
-            rmFormat: {
-                rmMsWordMarkup: true
-            }
-        }
-    });
+	//$('.wysiwyg').wysiwyg({
+	//	css: "css/wysiwyg-editor.css",
+	//	plugins: {
+	//		rmFormat: {
+	//			rmMsWordMarkup: true
+	//		}
+	//	}
+	//});
 
 	// TABEL CHART
     $("table.chart").each(function() {

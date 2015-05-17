@@ -46,11 +46,11 @@ abstract class private_controller {
 		$this->template->add_script('pirobox.extended.min');
 		$this->template->add_script('jquery.validate.min');
 		$this->template->add_script('jquery.metadata');
-		$this->template->add_script('jquery.wysiwyg');
-		$this->template->add_script('controls/wysiwyg.image');
-		$this->template->add_script('controls/wysiwyg.link');
-		$this->template->add_script('controls/wysiwyg.table');
-		$this->template->add_script('plugins/wysiwyg.rmFormat');
+//		$this->template->add_script('jquery.wysiwyg');
+//		$this->template->add_script('controls/wysiwyg.image');
+//		$this->template->add_script('controls/wysiwyg.link');
+//		$this->template->add_script('controls/wysiwyg.table');
+//		$this->template->add_script('plugins/wysiwyg.rmFormat');
 		$this->template->add_script('costum');
 		$this->template->add_script('index');
 	}
