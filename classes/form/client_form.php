@@ -77,7 +77,7 @@ class client_form {
 			if ($rows) {
 				foreach ($rows as $row) {
 					$table_column = new client_form_table_column($row);
-					$this->answers[$answer->getIdFormQuestion()] = $table_column;
+					$this->answers[$table_column->getIdFormQuestion()][] = $table_column;
 				}
 			}
 		}
@@ -130,7 +130,21 @@ class client_form {
 	}
 
 	public function is_full() {
-		return (count($this->getAnswers()) == count(client_form::get_count_all_questions()));
+		$questions = db::init()->query(array('cnt' => 'COUNT(*)'))
+			->from(array('fq' =>'form_question'))
+			->inner_join(array('fg' => 'form_group_question'), array('fq.id', 'fg.id_form_question'))
+			->where(array('fg.id_form_group', '=', settings::init()->get('id_form_group')))
+			->get_row();
+
+		$answers = db::init()->query(array('cnt' => 'COUNT(*)'))
+			->from(array('fq' =>'form_question'))
+			->inner_join(array('fg' => 'form_group_question'), array('fq.id', 'fg.id_form_question'))
+			->inner_join(array('cfa' => 'client_form_answer'), array('cfa.id_form_question', 'fq.id'))
+			->where(array('fg.id_form_group', '=', settings::init()->get('id_form_group')))
+			->where(array('cfa.id_client_form', '=', $this->id))
+			->get_row();
+
+		return ($questions['cnt'] == $answers['cnt']);
 	}
 
 	public function save() {
@@ -165,19 +179,25 @@ class client_form {
 								$id_answer = $answer;
 							}
 
-							$id = db::init()->exec('client_form_answer')
-								->values(array(
-									'id_form_answer' => $id_answer
-								))
+							$row = db::init()->query()
+								->from('client_form_answer')
 								->where(array('id_client_form', '=', $this->id))
 								->where(array('id_form_question', '=', $question->getId()))
-								->return_id('id')->update();
-							if (!$id) {
+								->get_row();
+							if (!$row) {
 								db::init()->exec('client_form_answer')->values(array(
 									'id_client_form' => $this->id,
 									'id_form_question' => $question->getId(),
 									'id_form_answer' => $id_answer
 								))->insert();
+							} else {
+								db::init()->exec('client_form_answer')
+									->values(array(
+										'id_form_answer' => $id_answer
+									))
+									->where(array('id_client_form', '=', $this->id))
+									->where(array('id_form_question', '=', $question->getId()))
+									->update();
 							}
 							break;
 
@@ -190,22 +210,46 @@ class client_form {
 								$text = $answer;
 							}
 
-							$id = db::init()->exec('client_form_answer')
-								->values(array('text' => $text))
+							$row = db::init()->query()
+								->from('client_form_answer')
 								->where(array('id_client_form', '=', $this->id))
 								->where(array('id_form_question', '=', $question->getId()))
-								->return_id('id')->update();
-							if (!$id) {
+								->get_row();
+							if (!$row) {
 								db::init()->exec('client_form_answer')->values(array(
 									'id_client_form' => $this->id,
 									'id_form_question' => $question->getId(),
 									'text' => $text
 								))->insert();
+							} else {
+								db::init()->exec('client_form_answer')
+									->values(array('text' => $text))
+									->where(array('id_client_form', '=', $this->id))
+									->where(array('id_form_question', '=', $question->getId()))
+									->update();
 							}
 							break;
 
 						case 'table':
+							db::init()->exec('client_form_table_column')
+								->where(array('id_client_form', '=', $this->id))
+								->where(array('id_form_question', '=', $question->getId()))
+								->delete();
+
+							if ($answer) foreach ($answer as $id_table_column => $values) {
+								if ($values) foreach ($values as $value) {
+									if ($value != '') {
+										db::init()->exec('client_form_table_column')->values(array(
+											'id_client_form' => $this->id,
+											'id_form_question' => $question->getId(),
+											'id_form_table_column' => $id_table_column,
+											'text' => $value
+										))->insert();
+									}
+								}
+							}
 							break;
+
 					}
 				}
 
@@ -258,6 +302,18 @@ class client_form {
 
 	// Static functions
 
+	public static function get_questions_for_analizer() {
+		$questions = db::init()->query()
+			->from(array('fq' =>'form_question'))
+			->inner_join(array('fg' => 'form_group_question'), array('fq.id', 'fg.id_form_question'))
+			->where(array('fg.id_form_group', '=', settings::init()->get('id_form_group')))
+			->get_all();
+		foreach ($questions as $key => $question) {
+			$questions[$key]['answers'] = db::init()->query()->from('form_answer')->where(array('id_form_question', '=', $question['id']))->get_all();
+		}
+		return $questions;
+	}
+
 	public static function get_count_all_questions() {
 		$row = db::init()->query(array('cnt' => 'COUNT(*)'))->from('form_question')->get_row();
 		return $row['cnt'];
@@ -279,6 +335,7 @@ class client_form {
 		return $groups;
 
 	}
+
 	public static function get_form_areas() {
 		$areas = array();
 

@@ -17,6 +17,11 @@ class client_form_area {
 	 */
 	private $id_form_area;
 
+	/**
+	 * @var array
+	 */
+	private $groups;
+
 	public function __construct($values) {
 		if (!is_array($values)) {
 			$values = db::init()->query()->from('client_form_area')
@@ -26,6 +31,33 @@ class client_form_area {
 		if ($values) foreach ($values as $key => $value) {
 			$this->$key = $value;
 		}
+	}
+
+	public function getGroups() {
+		if (!isset($this->groups)) {
+			$this->groups = array();
+
+			$rows = db::init()->query('id_form_group')
+				->from('form_area_group')
+				->where(array('id_form_area', '=', $this->id_form_area))
+				->get_all();
+
+			foreach ($rows as $row) {
+				$group = new form_group($row['id_form_group']);
+				$this->groups[] = $group;
+			}
+		}
+
+		return $this->groups;
+	}
+
+	public function getGroupsIds() {
+		$groups_ids = array();
+		$groups = $this->getGroups();
+		if ($groups) foreach ($groups as $group) {
+			$groups_ids[] = $group->getId();
+		}
+		return $groups_ids;
 	}
 
 	/**

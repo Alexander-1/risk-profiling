@@ -7,19 +7,19 @@ class analyzer {
 		$parameters = array();
 		$parameters['Answers'] = array();
 
-//		$questions = client_form::get_all_questions();
-//
-//		foreach ($questions as $question) {
-//			$letter = "";
-//			foreach ($question['answers'] as $key => $answer) {
-//				if ($answer['id'] == $form->answers[$question['id']]['id_answer']) {
-//					$letter = $letters[$key];
-//					break;
-//				}
-//			}
-//			$parameters['Answers'][] = $letter;
-//		}
+		$questions = client_form::get_questions_for_analizer();
+		$form_answers = $form->getAnswers();
 
+		foreach ($questions as $question) {
+			$letter = "";
+			if ($question['answers']) foreach ($question['answers'] as $key => $answer) {
+				if ($answer['id'] == $form_answers[$question['id']]->getIdFormAnswer()) {
+					$letter = $letters[$key];
+					break;
+				}
+			}
+			$parameters['Answers'][] = $letter;
+		}
 
 		for ($i = 0; $i < 5; $i++) {
 			$parameters['ExpectedVols'][] = settings::init()->get('volatility_' . $i);
@@ -43,7 +43,6 @@ class analyzer {
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, "$parameters");
 
-		//die(var_dump($parameters));
 		if (!curl_errno($ch)) {
 			$output = curl_exec($ch);
 		} else {

@@ -2,9 +2,9 @@
 
 	<div class="row no-border">
 		<label><?= $question->getText() ?></label>
-		<div class="rowright">
+		<div <?= ($question->getType() == 'table' ? '' : 'class="rowright"' )?>>
 
-			<? switch ($question->getType()) {
+			<? 	switch ($question->getType()) {
 
 				case 'select': ?>
 					<select name="question[<?= $question->getId() ?>]"
@@ -52,7 +52,51 @@
 					<img src="/images/icons/system-tick-alt-02.png" id="img<?= $question->getId() ?>" class="icon check_question" alt="" />
 
 				<? case 'table': ?>
-					table
+
+					<? if ($question->getTableColumns()): ?>
+						<table class="form_table">
+							<thead>
+							<? for ($i = 0; $i < 5; $i++): ?>
+								<? if ($i == 1): ?>
+									</thead>
+									<tbody>
+								<? endif;?>
+								<tr>
+								<? foreach ($question->getTableColumns() as $table_column): ?>
+
+									<? if ($i == 0): ?>
+										<th><?= $table_column->getTitle() ?></th>
+									<? else: ?>
+
+									<? switch ($table_column->getType()) {
+
+										case 'text': ?>
+											<td><input type="text"
+												   name="question[<?= $question->getId() ?>][<?= $table_column->getId() ?>][<?= $i-1 ?>]"
+												   value="<?= isset($form_question[$question->getId()][$table_column->getId()][$i-1]) ? $form_question[$question->getId()][$table_column->getId()][$i-1] : '' ?>" /></td>
+											<? break; ?>
+
+										<? case 'checkbox': ?>
+											<td><input type="checkbox"
+												name="question[<?= $question->getId() ?>][<?= $table_column->getId() ?>][<?= $i-1 ?>]"
+												<?= isset($form_question[$question->getId()][$table_column->getId()][$i-1]) ? 'checked="checked"' : '' ?>/></td>
+											<? break; ?>
+
+										<? default: ?>
+											<? $values = explode(',',$table_column->getType()); ?>
+											<td><?= $values[$i-1] ?></td>
+										<? break; ?>
+
+									<? } ?>
+									<? endif;?>
+
+								<? endforeach; ?>
+								</tr>
+							<? endfor; ?>
+							</tbody>
+						</table>
+					<? endif; ?>
+
 					<img src="/images/icons/system-tick-alt-02.png" id="img<?= $question->getId() ?>" class="icon check_question" alt="" />
 					<? break; ?>
 

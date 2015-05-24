@@ -49,7 +49,7 @@ if ($form->get_id()) {
 						   id="form-area-<?= $area->getId() ?>" data-id="<?= $area->getId() ?>"
 						   <?= in_array($area->getId(), $form->getAreasIds()) ? 'checked="checked"' : "" ?>
 						   onchange="changeFormArea();" class="form_area"/>
-					<label for="form-area-<?= $area->getId() ?>"><?= $area->getTitle() ?></label>
+					<label for="form-area-<?= $area->getId() ?>" style="width: inherit;"><?= $area->getTitle() ?></label>
 				<? endforeach; ?>
 			</div>
 		</div>

@@ -61,7 +61,7 @@
 			<div>
 				<? if ($areas) foreach ($areas as $area): ?>
 					<input type="checkbox" name="area[]" value="<?= $area->getId() ?>" id="form-area-<?= $area->getId() ?>" data-id="<?= $area->getId() ?>" onchange="changeFormArea();" class="form_area" />
-					<label for="form-area-<?= $area->getId() ?>"><?= $area->getTitle() ?></label>
+					<label for="form-area-<?= $area->getId() ?>" style="width: inherit;"><?= $area->getTitle() ?></label>
 				<? endforeach; ?>
 			</div>
 		</div>

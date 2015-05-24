@@ -96,7 +96,7 @@ button.medium.grey[disabled="disabled"] span {
 	clear: both;
 }
 
-.client_form .rowright label {
+.client_form label {
 	width: 450px;
 	padding-right: 10px;
 }
@@ -118,4 +118,18 @@ button.medium.grey[disabled="disabled"] span {
 
 .check_question {
 	display: none;
+}
+
+.form_table td {
+	padding: 0;
+	text-align: center;
+}
+.form_table td input {
+	width: 90%;
+	border: none;;
+}
+
+.pdf_form_table td {
+	text-align: center;
+	min-height: 20px;
 }

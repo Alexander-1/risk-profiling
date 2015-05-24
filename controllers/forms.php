@@ -13,7 +13,7 @@ class controller_forms extends private_controller {
 		$this->set('forms', $forms);
 		$this->set('client', $client);
 		$this->set('comment', post::passed('comment') ? post::get_string('comment') : '');
-		$this->set('form_question', post::passed('question') ? post::get_as_is('question') : '');
+		$this->set('form_question', post::passed('question') ? post::get_as_is('question') : array());
 
 		$this->show_template();
 	}
@@ -26,18 +26,21 @@ class controller_forms extends private_controller {
 
 		$form_questions = array();
 		if ($form->getAnswers()) {
-			foreach ($form->getAnswers() as $answer) {
-				$question = new form_question($answer->getIdFormQuestion());
+			foreach ($form->getAnswers() as $id_question => $answer) {
+				$question = new form_question($id_question);
 				switch ($question->getType()) {
 					case 'select':
-						$form_questions[$answer->getIdFormQuestion()] = $answer->getIdFormAnswer();
+						$form_questions[$question->getId()] = $answer->getIdFormAnswer();
 						break;
 					case 'text':
 					case 'date':
 					case 'textarea':
-						$form_questions[$answer->getIdFormQuestion()] = $answer->getText();
+						$form_questions[$question->getId()] = $answer->getText();
 						break;
 					case 'table':
+						if ($answer) foreach ($answer as $ans) {
+							$form_questions[$question->getId()][$ans->getIdFormTableColumn()][] = $ans->getText();
+						}
 						break;
 				}
 			}
@@ -143,19 +146,19 @@ class controller_forms extends private_controller {
 
 					$form = new client_form($id_form);
 
-					if (file_exists($this->get_xml_file_path($form))) {
-						unlink($this->get_xml_file_path($form));
-					}
-					if (file_exists($this->get_pdf_file_path($form, false))) {
-						unlink($this->get_pdf_file_path($form, false));
-					}
-					if (file_exists($this->get_pdf_file_path($form, true))) {
-						unlink($this->get_pdf_file_path($form, true));
-					}
-
-					$this->create_xml($form);
-					$this->create_pdf($form, false);
-					$this->create_pdf($form, true);
+//					if (file_exists($this->get_xml_file_path($form))) {
+//						unlink($this->get_xml_file_path($form));
+//					}
+//					if (file_exists($this->get_pdf_file_path($form, false))) {
+//						unlink($this->get_pdf_file_path($form, false));
+//					}
+//					if (file_exists($this->get_pdf_file_path($form, true))) {
+//						unlink($this->get_pdf_file_path($form, true));
+//					}
+//
+//					$this->create_xml($form);
+//					$this->create_pdf($form, false);
+//					$this->create_pdf($form, true);
 
 					$this->redirect("forms/edit?id={$form->id_client}&id_form={$form->id}&success&edit");
 				}
